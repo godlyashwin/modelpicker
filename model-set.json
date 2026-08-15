@@ -1,0 +1,63 @@
+{"model_ladder": [
+      {
+        "model_id": "meta-llama/llama-3.2-3b-instruct",
+        "family": "llama",
+        "params_b": 1.0,
+        "active_params_b": 1.0,
+        "is_moe": false,
+        "context_window": 131072,
+        "role": "target",
+        "notes": "Bottom rung. The entire project is the question of how often this is enough."
+      },
+      {
+        "model_id": "google/gemma-4-31b-it",
+        "family": "gemma",
+        "params_b": 2.6,
+        "active_params_b": 2.6,
+        "is_moe": false,
+        "context_window": 8192,
+        "role": "target",
+        "notes": "Small, different training pipeline. Short context \u2014 watch for truncation on long extraction inputs."
+      },
+      {
+        "model_id": "meta-llama/llama-3.1-70b-instruct",
+        "family": "llama",
+        "params_b": 70.0,
+        "active_params_b": 70.0,
+        "is_moe": false,
+        "context_window": 131072,
+        "role": "target",
+        "notes": "The strong open default most teams reach for without measuring the alternatives."
+      },
+      {
+        "model_id": "mistralai/mixtral-8x22b-instruct",
+        "family": "mixtral",
+        "params_b": 141.0,
+        "active_params_b": 39.0,
+        "is_moe": true,
+        "context_window": 65536,
+        "role": "target",
+        "notes": "MoE \u2014 serving cost tracks active params (39B), not the 141B headline. Don't rank by total params."
+      },
+      {
+        "model_id": "qwen/qwen3.5-122b-a10b",
+        "family": "qwen",
+        "params_b": 122.0,
+        "active_params_b": 10.0,
+        "is_moe": true,
+        "context_window": 131072,
+        "role": "target",
+        "notes": "Largest rung, different training distribution, sparse activation."
+      },
+      {
+        "model_id": "deepseek-ai/deepseek-v4-pro",
+        "family": "deepseek",
+        "params_b": null,
+        "active_params_b": null,
+        "is_moe": false,
+        "context_window": 131072,
+        "role": "judge",
+        "notes": "Judge and cascade verifier. Deliberately NOT in the target ladder \u2014 a model must not grade answers it is also scored on."
+      }
+  ]
+}

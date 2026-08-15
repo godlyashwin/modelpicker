@@ -1,0 +1,130 @@
+{
+  "run_id": "09dec178-1644-4505-ab1d-e10f2913a3e5",
+  "started_at": "2026-08-15T22:55:19.347967Z",
+  "ended_at": "2026-08-15T22:55:53.484728Z",
+  "task_set_id": "toy-routing-benchmark-v1",
+  "models": [
+    {
+      "model_id": "meta-llama/llama-3.2-3b-instruct",
+      "family": "llama",
+      "params_b": 1.0,
+      "active_params_b": 1.0,
+      "is_moe": false,
+      "context_window": 131072,
+      "role": "target",
+      "notes": "Bottom rung. The entire project is the question of how often this is enough."
+    },
+    {
+      "model_id": "google/gemma-4-31b-it",
+      "family": "gemma",
+      "params_b": 2.6,
+      "active_params_b": 2.6,
+      "is_moe": false,
+      "context_window": 8192,
+      "role": "target",
+      "notes": "Small, different training pipeline. Short context — watch for truncation on long extraction inputs."
+    },
+    {
+      "model_id": "meta-llama/llama-3.1-70b-instruct",
+      "family": "llama",
+      "params_b": 70.0,
+      "active_params_b": 70.0,
+      "is_moe": false,
+      "context_window": 131072,
+      "role": "target",
+      "notes": "The strong open default most teams reach for without measuring the alternatives."
+    },
+    {
+      "model_id": "mistralai/mixtral-8x22b-instruct",
+      "family": "mixtral",
+      "params_b": 141.0,
+      "active_params_b": 39.0,
+      "is_moe": true,
+      "context_window": 65536,
+      "role": "target",
+      "notes": "MoE — serving cost tracks active params (39B), not the 141B headline. Don't rank by total params."
+    },
+    {
+      "model_id": "qwen/qwen3.5-122b-a10b",
+      "family": "qwen",
+      "params_b": 122.0,
+      "active_params_b": 10.0,
+      "is_moe": true,
+      "context_window": 131072,
+      "role": "target",
+      "notes": "Largest rung, different training distribution, sparse activation."
+    }
+  ],
+  "judge_model": "deepseek-ai/deepseek-v4-pro",
+  "temperature": 0.0,
+  "max_tokens": 256,
+  "concurrency": 4,
+  "interleaved": true,
+  "n_repeats": 1,
+  "rng_seed": 42,
+  "price_table": {
+    "id": "prices-2026-08-illustrative",
+    "as_of": "2026-08-01",
+    "entries": [
+      {
+        "model_id": "meta-llama/llama-3.2-3b-instruct",
+        "usd_per_1m_input": 0.02,
+        "usd_per_1m_output": 0.02,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "google/gemma-4-31b-it",
+        "usd_per_1m_input": 0.03,
+        "usd_per_1m_output": 0.03,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "meta-llama/llama-3.1-70b-instruct",
+        "usd_per_1m_input": 0.6,
+        "usd_per_1m_output": 0.6,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "mistralai/mixtral-8x22b-instruct",
+        "usd_per_1m_input": 0.9,
+        "usd_per_1m_output": 0.9,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "qwen/qwen3.5-122b-a10b",
+        "usd_per_1m_input": 0.7,
+        "usd_per_1m_output": 0.7,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "deepseek-ai/deepseek-v4-pro",
+        "usd_per_1m_input": 1.2,
+        "usd_per_1m_output": 1.2,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      }
+    ],
+    "notes": "ILLUSTRATIVE VALUES — every entry is flagged is_estimate. Replacing these with sourced public list prices (with real source_url and as_of values) is a Week 2 deliverable. Until you do, every dollar figure your tool prints is a placeholder, and the report must say so."
+  },
+  "n_items": 30,
+  "n_calls": 150,
+  "config_hash": "c3e2a44d57b8c7fe",
+  "notes": "max_tokens is 64 for exact_match/normalized_match/mcq_letter/numeric_tolerance and 256 for open-ended scoring methods (token_f1) — identical across models for a given task, so the cost comparison isn't rigged by model. 0 model(s) unavailable at run start: []."
+}

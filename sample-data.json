@@ -1,0 +1,969 @@
+{
+  "_readme": "Bootstrap data for the model selection & cost/quality/latency profiler. Three things live here: a small real task set you can run on Day 1, and \u2014 clearly separated \u2014 a WORKED EXAMPLE of what a full 200-item run over the complete task set looks like end to end. The worked numbers are internally consistent and are what your Week 3 and Week 6 code should reproduce; see `worked_example_check`. The 12 task items below are yours to run for real; the profiles, frontier and simulations describe a hypothetical larger run, not those 12 items.",
+  "price_table": {
+    "id": "prices-2026-08-illustrative",
+    "as_of": "2026-08-01",
+    "notes": "ILLUSTRATIVE VALUES \u2014 every entry is flagged is_estimate. Replacing these with sourced public list prices (with real source_url and as_of values) is a Week 2 deliverable. Until you do, every dollar figure your tool prints is a placeholder, and the report must say so.",
+    "entries": [
+      {
+        "model_id": "meta/llama-3.2-1b-instruct",
+        "usd_per_1m_input": 0.02,
+        "usd_per_1m_output": 0.02,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "google/gemma-2-2b-it",
+        "usd_per_1m_input": 0.03,
+        "usd_per_1m_output": 0.03,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "meta/llama-3.3-70b-instruct",
+        "usd_per_1m_input": 0.6,
+        "usd_per_1m_output": 0.6,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "mistralai/mixtral-8x22b-instruct",
+        "usd_per_1m_input": 0.9,
+        "usd_per_1m_output": 0.9,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "qwen/qwen3-5-122b-a10b",
+        "usd_per_1m_input": 0.7,
+        "usd_per_1m_output": 0.7,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "deepseek-ai/deepseek-v4-pro",
+        "usd_per_1m_input": 1.2,
+        "usd_per_1m_output": 1.2,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      }
+    ]
+  },
+  "model_ladder": [
+    {
+      "model_id": "meta/llama-3.2-1b-instruct",
+      "family": "llama",
+      "params_b": 1.0,
+      "active_params_b": 1.0,
+      "is_moe": false,
+      "context_window": 131072,
+      "role": "target",
+      "notes": "Bottom rung. The entire project is the question of how often this is enough."
+    },
+    {
+      "model_id": "google/gemma-2-2b-it",
+      "family": "gemma",
+      "params_b": 2.6,
+      "active_params_b": 2.6,
+      "is_moe": false,
+      "context_window": 8192,
+      "role": "target",
+      "notes": "Small, different training pipeline. Short context \u2014 watch for truncation on long extraction inputs."
+    },
+    {
+      "model_id": "meta/llama-3.3-70b-instruct",
+      "family": "llama",
+      "params_b": 70.0,
+      "active_params_b": 70.0,
+      "is_moe": false,
+      "context_window": 131072,
+      "role": "target",
+      "notes": "The strong open default most teams reach for without measuring the alternatives."
+    },
+    {
+      "model_id": "mistralai/mixtral-8x22b-instruct",
+      "family": "mixtral",
+      "params_b": 141.0,
+      "active_params_b": 39.0,
+      "is_moe": true,
+      "context_window": 65536,
+      "role": "target",
+      "notes": "MoE \u2014 serving cost tracks active params (39B), not the 141B headline. Don't rank by total params."
+    },
+    {
+      "model_id": "qwen/qwen3-5-122b-a10b",
+      "family": "qwen",
+      "params_b": 122.0,
+      "active_params_b": 10.0,
+      "is_moe": true,
+      "context_window": 131072,
+      "role": "target",
+      "notes": "Largest rung, different training distribution, sparse activation."
+    },
+    {
+      "model_id": "deepseek-ai/deepseek-v4-pro",
+      "family": "deepseek",
+      "params_b": null,
+      "active_params_b": null,
+      "is_moe": false,
+      "context_window": 131072,
+      "role": "judge",
+      "notes": "Judge and cascade verifier. Deliberately NOT in the target ladder \u2014 a model must not grade answers it is also scored on."
+    }
+  ],
+  "task_set": {
+    "id": "ts-support-ops-v1",
+    "name": "Support & operations mini-set",
+    "description": "12 hand-built items across five task types, shaped like real production traffic rather than academic trivia \u2014 because the whole point is measuring models on work a team actually sends them. Split 4 calibration / 8 holdout, with the calibration items spanning four different task types. Note that 4 items is far too few to actually tune an escalation threshold on \u2014 the split is here to establish the discipline, not to be sufficient. Your Week 2 set needs enough calibration items that a tuned threshold means something.",
+    "source": "hand-built",
+    "items": [
+      {
+        "id": "t-cls-001",
+        "task_type": "classification",
+        "scoring_method": "normalized_match",
+        "instruction": "Classify the support ticket into exactly one category. Reply with the category name only.",
+        "input_text": "I was charged twice for my July subscription and the second charge hasn't been refunded yet.",
+        "options": [
+          "billing",
+          "technical",
+          "account"
+        ],
+        "gold_answer": "billing",
+        "scoring_params": {},
+        "split": "calibration",
+        "metadata": {
+          "source": "hand-built"
+        }
+      },
+      {
+        "id": "t-cls-002",
+        "task_type": "classification",
+        "scoring_method": "normalized_match",
+        "instruction": "Classify the support ticket into exactly one category. Reply with the category name only.",
+        "input_text": "The desktop app crashes on launch every time since the last update. macOS 15.2, M3 Pro.",
+        "options": [
+          "billing",
+          "technical",
+          "account"
+        ],
+        "gold_answer": "technical",
+        "scoring_params": {},
+        "split": "holdout",
+        "metadata": {
+          "source": "hand-built"
+        }
+      },
+      {
+        "id": "t-cls-003",
+        "task_type": "classification",
+        "scoring_method": "normalized_match",
+        "instruction": "Classify the support ticket into exactly one category. Reply with the category name only.",
+        "input_text": "Can you move my seat licence from dana@ to dana.k@? Same person, new work address.",
+        "options": [
+          "billing",
+          "technical",
+          "account"
+        ],
+        "gold_answer": "account",
+        "scoring_params": {},
+        "split": "holdout",
+        "metadata": {
+          "source": "hand-built",
+          "note": "Genuinely borderline between account and billing \u2014 a seat licence is both. Items like this put a ceiling on every model's score; keep a few, and say so in the report."
+        }
+      },
+      {
+        "id": "t-ext-001",
+        "task_type": "extraction",
+        "scoring_method": "numeric_tolerance",
+        "instruction": "Extract the invoice total in US dollars. Reply with the number only, no currency symbol.",
+        "input_text": "Invoice #4471 \u2014 subtotal $2,340.00, tax $187.20, total due $2,527.20 by Aug 15.",
+        "options": null,
+        "gold_answer": "2527.20",
+        "scoring_params": {
+          "tolerance": 0.01
+        },
+        "split": "calibration",
+        "metadata": {
+          "source": "hand-built",
+          "note": "Distractor numbers are the point \u2014 subtotal and tax are both plausible-looking wrong answers."
+        }
+      },
+      {
+        "id": "t-ext-002",
+        "task_type": "extraction",
+        "scoring_method": "normalized_match",
+        "instruction": "Extract the effective date. Reply in YYYY-MM-DD format only.",
+        "input_text": "This Agreement is executed on March 3, 2026 and shall become effective on April 1, 2026.",
+        "options": null,
+        "gold_answer": "2026-04-01",
+        "scoring_params": {},
+        "split": "holdout",
+        "metadata": {
+          "source": "hand-built",
+          "note": "Execution date vs effective date \u2014 models that skim grab the first date."
+        }
+      },
+      {
+        "id": "t-ext-003",
+        "task_type": "extraction",
+        "scoring_method": "token_f1",
+        "instruction": "Extract the company name from the signature block. Reply with the name only.",
+        "input_text": "Best,\nMarcus Feld\nVP Operations\nNorthgate Logistics Group, Inc.\n(312) 555-0148",
+        "options": null,
+        "gold_answer": "Northgate Logistics Group, Inc.",
+        "scoring_params": {},
+        "split": "holdout",
+        "metadata": {
+          "source": "hand-built",
+          "note": "TOKEN_F1 gives partial credit for dropping ', Inc.' \u2014 decide in DESIGN.md whether partial credit is what you want here."
+        }
+      },
+      {
+        "id": "t-mcq-001",
+        "task_type": "mcq_qa",
+        "scoring_method": "mcq_letter",
+        "instruction": "Answer with the letter of the correct option only.",
+        "input_text": "Passage: The warehouse migration finished two weeks behind schedule. The delay traced to a customs hold on the racking shipment, not to the contractor, who had crews idle for nine days.\n\nQuestion: What caused the delay?",
+        "options": [
+          "A customs hold on the racking shipment",
+          "The contractor's crews",
+          "A scheduling error",
+          "Bad weather"
+        ],
+        "gold_answer": "A customs hold on the racking shipment",
+        "scoring_params": {},
+        "split": "calibration",
+        "metadata": {
+          "source": "hand-built",
+          "note": "Gold is stored as option TEXT, not 'A' \u2014 letters are a rendering detail."
+        }
+      },
+      {
+        "id": "t-mcq-002",
+        "task_type": "mcq_qa",
+        "scoring_method": "mcq_letter",
+        "instruction": "Answer with the letter of the correct option only.",
+        "input_text": "Passage: Tier 2 customers get 5,000 platform tokens monthly; unused tokens do not roll over. Tier 3 gets 20,000 and allows rollover for one billing cycle.\n\nQuestion: A Tier 2 customer uses 3,000 tokens in June. How many do they carry into July?",
+        "options": [
+          "0",
+          "2,000",
+          "5,000",
+          "3,000"
+        ],
+        "gold_answer": "0",
+        "scoring_params": {},
+        "split": "holdout",
+        "metadata": {
+          "source": "hand-built",
+          "note": "Requires reading the no-rollover clause, not just the number."
+        }
+      },
+      {
+        "id": "t-mcq-003",
+        "task_type": "mcq_qa",
+        "scoring_method": "mcq_letter",
+        "instruction": "Answer with the letter of the correct option only.",
+        "input_text": "Passage: The incident began at 02:14 UTC when the primary replica stopped accepting writes. Failover completed at 02:31. Customer-visible errors ended at 02:33.\n\nQuestion: How long were customers seeing errors?",
+        "options": [
+          "17 minutes",
+          "19 minutes",
+          "2 minutes",
+          "31 minutes"
+        ],
+        "gold_answer": "19 minutes",
+        "scoring_params": {},
+        "split": "holdout",
+        "metadata": {
+          "source": "hand-built",
+          "note": "02:14 to 02:33. The 17-minute distractor is the failover window, which is the easy wrong answer."
+        }
+      },
+      {
+        "id": "t-sa-001",
+        "task_type": "short_answer",
+        "scoring_method": "numeric_tolerance",
+        "instruction": "Answer with a number only.",
+        "input_text": "A team runs 14,000 requests a day. 22% escalate to a second model. How many escalations per day?",
+        "options": null,
+        "gold_answer": "3080",
+        "scoring_params": {
+          "tolerance": 0.5
+        },
+        "split": "holdout",
+        "metadata": {
+          "source": "hand-built"
+        }
+      },
+      {
+        "id": "t-sa-002",
+        "task_type": "short_answer",
+        "scoring_method": "normalized_match",
+        "instruction": "Answer in three words or fewer, using only information in the passage.",
+        "input_text": "Passage: After the pilot, the team standardised on the 8B model for classification and kept the 70B only for free-form drafting.\n\nQuestion: Which model handles classification?",
+        "options": null,
+        "gold_answer": "the 8B model",
+        "scoring_params": {},
+        "split": "calibration",
+        "metadata": {
+          "source": "hand-built",
+          "note": "NORMALIZED_MATCH strips articles, so '8B model' and 'the 8B model' both pass. Verify that against your normalizer."
+        }
+      },
+      {
+        "id": "t-sum-001",
+        "task_type": "summarization",
+        "scoring_method": "llm_judge",
+        "instruction": "Summarise the update in one sentence for an executive reader.",
+        "input_text": "Engineering completed the storage migration on Tuesday. Two customers hit read latency spikes during the cutover window and were credited. The rollback plan was not needed. Remaining work is decommissioning the old cluster, scheduled for next sprint.",
+        "options": null,
+        "gold_answer": "The storage migration completed successfully with two customers briefly affected and credited; only decommissioning the old cluster remains.",
+        "scoring_params": {
+          "judge_model": "deepseek-ai/deepseek-v4-pro",
+          "rubric": "Does the summary capture completion, the customer impact, and the remaining work, without inventing detail?"
+        },
+        "split": "holdout",
+        "metadata": {
+          "source": "hand-built",
+          "note": "The only judge-scored item type here. Judge cost counts toward YOUR run cost \u2014 budget for it."
+        }
+      }
+    ]
+  },
+  "example_calls": [
+    {
+      "id": "call-0001",
+      "item_id": "t-cls-002",
+      "model_id": "meta/llama-3.2-1b-instruct",
+      "raw_output": "technical",
+      "score": {
+        "value": 1.0,
+        "method": "normalized_match",
+        "parsed_answer": "technical",
+        "parse_failed": false,
+        "judge_model": null,
+        "judge_rationale": null
+      },
+      "usage": {
+        "prompt_tokens": 164,
+        "completion_tokens": 2,
+        "total_tokens": 166
+      },
+      "latency": {
+        "ttft_ms": 108.0,
+        "total_ms": 291.0,
+        "concurrency": 8,
+        "attempt": 1,
+        "timestamp": "2026-08-04T14:02:11.418Z"
+      },
+      "cost_usd": 3.32e-06,
+      "temperature": 0.0,
+      "max_tokens": 512,
+      "retries": 0,
+      "error": null,
+      "self_reported_confidence": 0.94,
+      "timestamp": "2026-08-04T14:02:11.709Z",
+      "note": "The easy case: a 1B model nails routine classification for a third of a cent per thousand calls."
+    },
+    {
+      "id": "call-0002",
+      "item_id": "t-mcq-002",
+      "model_id": "meta/llama-3.2-1b-instruct",
+      "raw_output": "B) 2,000 \u2014 the customer has 2,000 tokens remaining, so those carry over.",
+      "score": {
+        "value": 0.0,
+        "method": "mcq_letter",
+        "parsed_answer": "2,000",
+        "parse_failed": false,
+        "judge_model": null,
+        "judge_rationale": null
+      },
+      "usage": {
+        "prompt_tokens": 213,
+        "completion_tokens": 21,
+        "total_tokens": 234
+      },
+      "latency": {
+        "ttft_ms": 131.0,
+        "total_ms": 402.0,
+        "concurrency": 8,
+        "attempt": 1,
+        "timestamp": "2026-08-04T14:02:12.004Z"
+      },
+      "cost_usd": 4.68e-06,
+      "temperature": 0.0,
+      "max_tokens": 512,
+      "retries": 0,
+      "error": null,
+      "self_reported_confidence": 0.61,
+      "timestamp": "2026-08-04T14:02:12.406Z",
+      "note": "Wrong, and the model half-knows it \u2014 confidence 0.61 is below a 0.70 threshold, so a cascade escalates this one. This is the case that justifies the whole policy."
+    },
+    {
+      "id": "call-0003",
+      "item_id": "t-mcq-002",
+      "model_id": "meta/llama-3.3-70b-instruct",
+      "raw_output": "A",
+      "score": {
+        "value": 1.0,
+        "method": "mcq_letter",
+        "parsed_answer": "0",
+        "parse_failed": false,
+        "judge_model": null,
+        "judge_rationale": null
+      },
+      "usage": {
+        "prompt_tokens": 213,
+        "completion_tokens": 1,
+        "total_tokens": 214
+      },
+      "latency": {
+        "ttft_ms": 502.0,
+        "total_ms": 1633.0,
+        "concurrency": 8,
+        "attempt": 1,
+        "timestamp": "2026-08-04T14:02:12.410Z"
+      },
+      "cost_usd": 0.0001284,
+      "temperature": 0.0,
+      "max_tokens": 512,
+      "retries": 0,
+      "error": null,
+      "self_reported_confidence": null,
+      "timestamp": "2026-08-04T14:02:14.043Z",
+      "note": "The escalation target gets it right. Note the parsed_answer is the option TEXT ('0'), resolved from the letter \u2014 never compare letters directly."
+    },
+    {
+      "id": "call-0004",
+      "item_id": "t-cls-003",
+      "model_id": "meta/llama-3.3-70b-instruct",
+      "raw_output": "billing",
+      "score": {
+        "value": 0.0,
+        "method": "normalized_match",
+        "parsed_answer": "billing",
+        "parse_failed": false,
+        "judge_model": null,
+        "judge_rationale": null
+      },
+      "usage": {
+        "prompt_tokens": 158,
+        "completion_tokens": 2,
+        "total_tokens": 160
+      },
+      "latency": {
+        "ttft_ms": 466.0,
+        "total_ms": 1489.0,
+        "concurrency": 8,
+        "attempt": 1,
+        "timestamp": "2026-08-04T14:02:14.050Z"
+      },
+      "cost_usd": 9.6e-05,
+      "temperature": 0.0,
+      "max_tokens": 512,
+      "retries": 0,
+      "error": null,
+      "self_reported_confidence": null,
+      "timestamp": "2026-08-04T14:02:15.539Z",
+      "note": "The 70B misses one the 1B got right. These exist in every run \u2014 your report generator must handle 'small beat large on this item' without special-casing, and a couple of them belong in the writeup."
+    },
+    {
+      "id": "call-0005",
+      "item_id": "t-ext-001",
+      "model_id": "google/gemma-2-2b-it",
+      "raw_output": "The total due on invoice #4471 is $2,527.20, payable by August 15.",
+      "score": {
+        "value": 0.0,
+        "method": "numeric_tolerance",
+        "parsed_answer": null,
+        "parse_failed": true,
+        "judge_model": null,
+        "judge_rationale": null
+      },
+      "usage": {
+        "prompt_tokens": 171,
+        "completion_tokens": 19,
+        "total_tokens": 190
+      },
+      "latency": {
+        "ttft_ms": 147.0,
+        "total_ms": 488.0,
+        "concurrency": 8,
+        "attempt": 1,
+        "timestamp": "2026-08-04T14:02:15.544Z"
+      },
+      "cost_usd": 5.7e-06,
+      "temperature": 0.0,
+      "max_tokens": 512,
+      "retries": 0,
+      "error": null,
+      "self_reported_confidence": 0.88,
+      "timestamp": "2026-08-04T14:02:16.032Z",
+      "note": "The answer is CORRECT but the format instruction was ignored, so a strict scorer records parse_failed. How you handle this is a real decision: a lenient regex would score it 1.0 and change gemma's ranking. Whatever you choose, apply it identically to every model and report the parse-failure rate separately."
+    },
+    {
+      "id": "call-0006",
+      "item_id": "t-sum-001",
+      "model_id": "qwen/qwen3-5-122b-a10b",
+      "raw_output": "The storage migration finished Tuesday with two customers briefly hit by read latency and since credited; the only remaining task is decommissioning the old cluster next sprint.",
+      "score": {
+        "value": 1.0,
+        "method": "llm_judge",
+        "parsed_answer": null,
+        "parse_failed": false,
+        "judge_model": "deepseek-ai/deepseek-v4-pro",
+        "judge_rationale": "Captures completion, customer impact and credit, and the remaining decommissioning work. No invented detail."
+      },
+      "usage": {
+        "prompt_tokens": 196,
+        "completion_tokens": 38,
+        "total_tokens": 234
+      },
+      "latency": {
+        "ttft_ms": 549.0,
+        "total_ms": 2214.0,
+        "concurrency": 8,
+        "attempt": 1,
+        "timestamp": "2026-08-04T14:02:16.040Z"
+      },
+      "cost_usd": 0.0001638,
+      "temperature": 0.0,
+      "max_tokens": 512,
+      "retries": 0,
+      "error": null,
+      "self_reported_confidence": null,
+      "timestamp": "2026-08-04T14:02:18.254Z",
+      "note": "cost_usd here is the TARGET model's cost only. The judge call costs extra and is charged to your eval budget, not to the model under test \u2014 keep those two ledgers separate or your cost axis is wrong."
+    }
+  ],
+  "worked_example": {
+    "_note": "A hypothetical 200-item run over the full task set, used to pin down the shape of every downstream artifact. Not derived from the 12 items above.",
+    "run": {
+      "run_id": "run-worked-example",
+      "task_set_id": "ts-support-ops-v1",
+      "n_items": 200,
+      "temperature": 0.0,
+      "max_tokens": 512,
+      "concurrency": 8,
+      "interleaved": true,
+      "n_repeats": 1,
+      "rng_seed": 20260804,
+      "price_table_id": "prices-2026-08-illustrative",
+      "judge_model": "deepseek-ai/deepseek-v4-pro"
+    },
+    "profiles": [
+      {
+        "model_id": "meta/llama-3.2-1b-instruct",
+        "task_set_id": "ts-support-ops-v1",
+        "task_type": null,
+        "split": "holdout",
+        "n_items": 200,
+        "accuracy": 0.78,
+        "ci_low": 0.7176,
+        "ci_high": 0.8318,
+        "ci_method": "wilson",
+        "mean_prompt_tokens": 180.0,
+        "mean_completion_tokens": 24.0,
+        "latency_p50_ms": 340.0,
+        "latency_p95_ms": 780.0,
+        "latency_ttft_p50_ms": 120.0,
+        "concurrency": 8,
+        "cost_per_request_usd": 4.08e-06,
+        "cost_per_1k_requests_usd": 0.00408,
+        "cost_per_correct_answer_usd": 5.231e-06,
+        "parse_failure_rate": 0.055,
+        "error_rate": 0.0,
+        "price_table_id": "prices-2026-08-illustrative"
+      },
+      {
+        "model_id": "google/gemma-2-2b-it",
+        "task_set_id": "ts-support-ops-v1",
+        "task_type": null,
+        "split": "holdout",
+        "n_items": 200,
+        "accuracy": 0.71,
+        "ci_low": 0.6436,
+        "ci_high": 0.7685,
+        "ci_method": "wilson",
+        "mean_prompt_tokens": 180.0,
+        "mean_completion_tokens": 41.0,
+        "latency_p50_ms": 410.0,
+        "latency_p95_ms": 900.0,
+        "latency_ttft_p50_ms": 140.0,
+        "concurrency": 8,
+        "cost_per_request_usd": 6.63e-06,
+        "cost_per_1k_requests_usd": 0.00663,
+        "cost_per_correct_answer_usd": 9.338e-06,
+        "parse_failure_rate": 0.07,
+        "error_rate": 0.005,
+        "price_table_id": "prices-2026-08-illustrative"
+      },
+      {
+        "model_id": "meta/llama-3.3-70b-instruct",
+        "task_set_id": "ts-support-ops-v1",
+        "task_type": null,
+        "split": "holdout",
+        "n_items": 200,
+        "accuracy": 0.91,
+        "ci_low": 0.8622,
+        "ci_high": 0.9423,
+        "ci_method": "wilson",
+        "mean_prompt_tokens": 180.0,
+        "mean_completion_tokens": 62.0,
+        "latency_p50_ms": 1850.0,
+        "latency_p95_ms": 4200.0,
+        "latency_ttft_p50_ms": 480.0,
+        "concurrency": 8,
+        "cost_per_request_usd": 0.0001452,
+        "cost_per_1k_requests_usd": 0.1452,
+        "cost_per_correct_answer_usd": 0.00015956,
+        "parse_failure_rate": 0.005,
+        "error_rate": 0.0,
+        "price_table_id": "prices-2026-08-illustrative"
+      },
+      {
+        "model_id": "mistralai/mixtral-8x22b-instruct",
+        "task_set_id": "ts-support-ops-v1",
+        "task_type": null,
+        "split": "holdout",
+        "n_items": 200,
+        "accuracy": 0.87,
+        "ci_low": 0.8163,
+        "ci_high": 0.9097,
+        "ci_method": "wilson",
+        "mean_prompt_tokens": 180.0,
+        "mean_completion_tokens": 88.0,
+        "latency_p50_ms": 2400.0,
+        "latency_p95_ms": 5600.0,
+        "latency_ttft_p50_ms": 610.0,
+        "concurrency": 8,
+        "cost_per_request_usd": 0.0002412,
+        "cost_per_1k_requests_usd": 0.2412,
+        "cost_per_correct_answer_usd": 0.000277241,
+        "parse_failure_rate": 0.01,
+        "error_rate": 0.005,
+        "price_table_id": "prices-2026-08-illustrative"
+      },
+      {
+        "model_id": "qwen/qwen3-5-122b-a10b",
+        "task_set_id": "ts-support-ops-v1",
+        "task_type": null,
+        "split": "holdout",
+        "n_items": 200,
+        "accuracy": 0.93,
+        "ci_low": 0.8859,
+        "ci_high": 0.9578,
+        "ci_method": "wilson",
+        "mean_prompt_tokens": 180.0,
+        "mean_completion_tokens": 57.0,
+        "latency_p50_ms": 2100.0,
+        "latency_p95_ms": 4900.0,
+        "latency_ttft_p50_ms": 540.0,
+        "concurrency": 8,
+        "cost_per_request_usd": 0.0001659,
+        "cost_per_1k_requests_usd": 0.1659,
+        "cost_per_correct_answer_usd": 0.000178387,
+        "parse_failure_rate": 0.005,
+        "error_rate": 0.0,
+        "price_table_id": "prices-2026-08-illustrative"
+      }
+    ],
+    "pareto_frontier": {
+      "task_set_id": "ts-support-ops-v1",
+      "task_type": null,
+      "axis": "cost",
+      "points": [
+        {
+          "model_id": "meta/llama-3.2-1b-instruct",
+          "quality": 0.78,
+          "cost_axis_value": 0.00408,
+          "on_frontier": true,
+          "dominated_by": []
+        },
+        {
+          "model_id": "google/gemma-2-2b-it",
+          "quality": 0.71,
+          "cost_axis_value": 0.00663,
+          "on_frontier": false,
+          "dominated_by": [
+            "meta/llama-3.2-1b-instruct"
+          ]
+        },
+        {
+          "model_id": "meta/llama-3.3-70b-instruct",
+          "quality": 0.91,
+          "cost_axis_value": 0.1452,
+          "on_frontier": true,
+          "dominated_by": []
+        },
+        {
+          "model_id": "mistralai/mixtral-8x22b-instruct",
+          "quality": 0.87,
+          "cost_axis_value": 0.2412,
+          "on_frontier": false,
+          "dominated_by": [
+            "meta/llama-3.3-70b-instruct",
+            "qwen/qwen3-5-122b-a10b"
+          ]
+        },
+        {
+          "model_id": "qwen/qwen3-5-122b-a10b",
+          "quality": 0.93,
+          "cost_axis_value": 0.1659,
+          "on_frontier": true,
+          "dominated_by": []
+        }
+      ],
+      "frontier_model_ids": [
+        "meta/llama-3.2-1b-instruct",
+        "meta/llama-3.3-70b-instruct",
+        "qwen/qwen3-5-122b-a10b"
+      ],
+      "reading": "Three models are on the frontier and two are dominated. A dominated model has no defensible use case at these prices: something else is at least as accurate AND cheaper. Naming the dominator is what makes the finding actionable."
+    },
+    "quality_floor_analysis": {
+      "floor": {
+        "kind": "relative",
+        "value": 0.03,
+        "require_ci_lower_bound": false,
+        "rationale": "Within 3 accuracy points of the best model in the ladder."
+      },
+      "best_model_id": "qwen/qwen3-5-122b-a10b",
+      "best_accuracy": 0.93,
+      "absolute_floor_implied": 0.9,
+      "rows": [
+        {
+          "model_id": "meta/llama-3.2-1b-instruct",
+          "accuracy": 0.78,
+          "ci_low": 0.7176,
+          "clears_on_point_estimate": false,
+          "clears_on_ci_lower_bound": false,
+          "cost_per_1k_requests_usd": 0.00408
+        },
+        {
+          "model_id": "google/gemma-2-2b-it",
+          "accuracy": 0.71,
+          "ci_low": 0.6436,
+          "clears_on_point_estimate": false,
+          "clears_on_ci_lower_bound": false,
+          "cost_per_1k_requests_usd": 0.00663
+        },
+        {
+          "model_id": "meta/llama-3.3-70b-instruct",
+          "accuracy": 0.91,
+          "ci_low": 0.8622,
+          "clears_on_point_estimate": true,
+          "clears_on_ci_lower_bound": false,
+          "cost_per_1k_requests_usd": 0.1452
+        },
+        {
+          "model_id": "mistralai/mixtral-8x22b-instruct",
+          "accuracy": 0.87,
+          "ci_low": 0.8163,
+          "clears_on_point_estimate": false,
+          "clears_on_ci_lower_bound": false,
+          "cost_per_1k_requests_usd": 0.2412
+        },
+        {
+          "model_id": "qwen/qwen3-5-122b-a10b",
+          "accuracy": 0.93,
+          "ci_low": 0.8859,
+          "clears_on_point_estimate": true,
+          "clears_on_ci_lower_bound": false,
+          "cost_per_1k_requests_usd": 0.1659
+        }
+      ],
+      "cheapest_clearing_on_point_estimate": "meta/llama-3.3-70b-instruct",
+      "cheapest_clearing_on_ci_lower_bound": null,
+      "reading": "The two rules disagree, and that disagreement is the most important thing in this file. On the point estimate, llama-3.3-70b clears the floor and is the cheapest that does. On the CI lower bound it does not clear \u2014 only the best model itself survives, and the 'savings' evaporate. Design question 2 is asking you to pick a side and defend it."
+    },
+    "policy_simulations": [
+      {
+        "policy_id": "pol-cascade-conf-070",
+        "task_set_id": "ts-support-ops-v1",
+        "split": "calibration",
+        "n_items": 200,
+        "blended_accuracy": 0.9,
+        "blended_ci_low": 0.8506,
+        "blended_ci_high": 0.9343,
+        "blended_cost_per_1k_requests_usd": 0.030216,
+        "blended_latency_p95_ms": 4980.0,
+        "escalation_rate": 0.18,
+        "baseline_small_accuracy": 0.78,
+        "baseline_small_cost_per_1k_usd": 0.00408,
+        "baseline_large_accuracy": 0.91,
+        "baseline_large_cost_per_1k_usd": 0.1452,
+        "cost_savings_vs_large": 0.7919,
+        "quality_retained_vs_large": 0.989,
+        "notes": "Threshold 0.70 was tuned on THIS split, so these numbers are optimistic by construction. They are shown only so the calibration-to-holdout gap is visible."
+      },
+      {
+        "policy_id": "pol-cascade-conf-070",
+        "task_set_id": "ts-support-ops-v1",
+        "split": "holdout",
+        "n_items": 200,
+        "blended_accuracy": 0.89,
+        "blended_ci_low": 0.8391,
+        "blended_ci_high": 0.9262,
+        "blended_cost_per_1k_requests_usd": 0.036024,
+        "blended_latency_p95_ms": 4980.0,
+        "escalation_rate": 0.22,
+        "baseline_small_accuracy": 0.78,
+        "baseline_small_cost_per_1k_usd": 0.00408,
+        "baseline_large_accuracy": 0.91,
+        "baseline_large_cost_per_1k_usd": 0.1452,
+        "cost_savings_vs_large": 0.7519,
+        "quality_retained_vs_large": 0.978,
+        "notes": "The reportable result. Escalation ran 4 points higher and accuracy 1 point lower than calibration promised \u2014 that gap is the honest cost of threshold tuning, and it belongs in the report."
+      }
+    ],
+    "policies": [
+      {
+        "id": "pol-baseline-small",
+        "name": "Always small",
+        "kind": "baseline",
+        "rules": [
+          {
+            "condition": "always",
+            "model_id": "meta/llama-3.2-1b-instruct",
+            "note": "Floor on cost, floor on quality"
+          }
+        ]
+      },
+      {
+        "id": "pol-baseline-large",
+        "name": "Always large",
+        "kind": "baseline",
+        "rules": [
+          {
+            "condition": "always",
+            "model_id": "meta/llama-3.3-70b-instruct",
+            "note": "What most teams ship by default"
+          }
+        ]
+      },
+      {
+        "id": "pol-cascade-conf-070",
+        "name": "Cascade on self-reported confidence < 0.70",
+        "kind": "cascade",
+        "rules": [],
+        "primary_model_id": "meta/llama-3.2-1b-instruct",
+        "escalation_model_id": "meta/llama-3.3-70b-instruct",
+        "escalation_signal": "self_reported_confidence",
+        "escalation_threshold": 0.7,
+        "escalation_signal_cost_per_request_usd": 0.0,
+        "fallback_model_id": "meta/llama-3.3-70b-instruct",
+        "note": "Signal cost is 0 here because the confidence rides along on the primary call. Pick sample_disagreement or verifier_model instead and the signal costs real money that comes straight out of the savings \u2014 model that explicitly."
+      }
+    ]
+  },
+  "worked_example_check": {
+    "_note": "Derived quantities, stated so your implementation has something to reproduce exactly. If your code disagrees with any line here, one of you has a bug \u2014 find out which before moving on. All figures assume the illustrative price table and 180 mean prompt tokens per item.",
+    "cost_per_1k_requests_usd": {
+      "meta/llama-3.2-1b-instruct": 0.00408,
+      "google/gemma-2-2b-it": 0.00663,
+      "meta/llama-3.3-70b-instruct": 0.1452,
+      "mistralai/mixtral-8x22b-instruct": 0.2412,
+      "qwen/qwen3-5-122b-a10b": 0.1659
+    },
+    "cost_per_correct_answer_usd": {
+      "meta/llama-3.2-1b-instruct": 5.231e-06,
+      "google/gemma-2-2b-it": 9.338e-06,
+      "meta/llama-3.3-70b-instruct": 0.00015956,
+      "mistralai/mixtral-8x22b-instruct": 0.000277241,
+      "qwen/qwen3-5-122b-a10b": 0.000178387
+    },
+    "wilson_95_intervals": {
+      "meta/llama-3.2-1b-instruct": [
+        0.7176,
+        0.8318
+      ],
+      "google/gemma-2-2b-it": [
+        0.6436,
+        0.7685
+      ],
+      "meta/llama-3.3-70b-instruct": [
+        0.8622,
+        0.9423
+      ],
+      "mistralai/mixtral-8x22b-instruct": [
+        0.8163,
+        0.9097
+      ],
+      "qwen/qwen3-5-122b-a10b": [
+        0.8859,
+        0.9578
+      ]
+    },
+    "pareto_frontier_model_ids": [
+      "meta/llama-3.2-1b-instruct",
+      "meta/llama-3.3-70b-instruct",
+      "qwen/qwen3-5-122b-a10b"
+    ],
+    "dominated": {
+      "google/gemma-2-2b-it": [
+        "meta/llama-3.2-1b-instruct"
+      ],
+      "mistralai/mixtral-8x22b-instruct": [
+        "meta/llama-3.3-70b-instruct",
+        "qwen/qwen3-5-122b-a10b"
+      ]
+    },
+    "large_over_small_cost_ratio": 35.5882,
+    "cascade_holdout": {
+      "escalation_rate": 0.22,
+      "blended_cost_per_1k_requests_usd": 0.036024,
+      "cost_savings_vs_large": 0.7519,
+      "quality_retained_vs_large": 0.978,
+      "formula": "blended_cost_per_request = small_cost_per_request + escalation_rate * large_cost_per_request"
+    },
+    "calibration_to_holdout_gap": {
+      "savings_calibration": 0.7919,
+      "savings_holdout": 0.7519,
+      "delta": 0.04,
+      "reading": "Report the holdout figure. Report the gap too \u2014 it is evidence your methodology is honest, not evidence it failed."
+    }
+  },
+  "examples_of_bad_analysis": [
+    {
+      "id": "bad-001",
+      "issue": "Declaring a small model 'good enough' on an interval that doesn't clear the floor",
+      "what_happened": "The quality floor is within 3 points of the best model (0.93), so 0.90. meta/llama-3.3-70b-instruct scores 0.91 and gets recommended. But its 95% Wilson interval on 200 items is [0.8622, 0.9423] \u2014 the lower bound is well under 0.90.",
+      "why_it_is_wrong": "The point estimate clears the floor; the evidence doesn't. On this data you cannot rule out that the model is below the bar.",
+      "fix": "Decide in DESIGN.md whether your floor is a point-estimate rule or a CI rule, state it in the report, and if the interval is what decides a real spending decision, get more items until it's tight enough to decide."
+    },
+    {
+      "id": "bad-002",
+      "issue": "Latency measured sequentially instead of interleaved",
+      "what_happened": "The 1B model was benchmarked at 09:00 and the 70B at 14:00. The 1B looked 6x faster.",
+      "why_it_is_wrong": "Endpoint load varies through the day. Part of that 6x is the clock, and you can't say how much.",
+      "fix": "Round-robin requests across models within a single run so every model sees the same load, and record the concurrency on every sample."
+    },
+    {
+      "id": "bad-003",
+      "issue": "Cascade threshold tuned and reported on the same split",
+      "what_happened": "Escalation threshold 0.70 was swept on the full task set, giving 18% escalation and 79.2% savings \u2014 and that was the headline number in the report.",
+      "why_it_is_wrong": "The threshold was fitted to that data. On held-out items it escalates 22% and saves 75.2%. The reported figure was ~4 points optimistic.",
+      "fix": "Tune on calibration, report on holdout, and publish both so the reader can see the size of the gap."
+    },
+    {
+      "id": "bad-004",
+      "issue": "Comparing $/token instead of $/request",
+      "what_happened": "Two models are listed at the same $/1M tokens, so they're called cost-equivalent.",
+      "why_it_is_wrong": "Output length is a lever the model pulls. mistralai/mixtral-8x22b-instruct emits 88 completion tokens per answer where qwen/qwen3-5-122b-a10b emits 57 \u2014 at equal token pricing that alone is a 1.5x cost difference on the completion side, before any quality comparison.",
+      "fix": "Price per request using measured mean prompt and completion tokens, and treat mean completion tokens as a reported metric in its own right."
+    }
+  ]
+}

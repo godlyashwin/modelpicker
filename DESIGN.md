@@ -1,0 +1,8 @@
+1. **Prompt fairness.** 
+
+
+Small models often need more explicit format instructions to score well. One shared prompt for all models is fair but flatters the big ones; a per-model tuned prompt is realistic but introduces a confound you can't separate from model capability. Which is your primary condition, what's the secondary, and what does the report claim about each?
+2. **What "good enough" means.** An absolute floor (≥85%) and a relative floor (within 3 points of the best model) recommend different models as the ladder changes. Pick one as the headline. Then answer the harder half: must the floor be cleared by the point estimate or by the CI's lower bound? Your sample data contains a model where those two rules disagree — say which rule you'd defend to someone spending real money on your recommendation.
+3. **Escalation signals.** A cascade needs a cheap signal for "the small model probably got this wrong." Self-reported confidence, disagreement across k samples, output length or hedging heuristics, a cheap verifier model — each has a different cost, and the signal's cost counts against your savings. Which did you pick, what does it cost, and how much of the theoretical savings does it eat?
+4. **Honest savings.** Tuning an escalation threshold on the same data you report savings on is how cascade papers overstate results. How do you split, and what's the gap between your calibration and holdout numbers? (Report both. The gap is a finding, not an embarrassment.)
+5. **Aggregating across task types.** A model can win on classification and lose badly on extraction. Does your headline recommendation collapse to one model, or is the real deliverable a per-task-type routing table? Defend the choice — and if you collapse, say what the collapse hides.

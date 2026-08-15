@@ -1,0 +1,410 @@
+{
+  "id": "toy-routing-benchmark-v1",
+  "name": "toy-routing-benchmark",
+  "description": "Hand-built 30-item toy set (Week 2 deliverable): 15 calibration / 15 holdout, all 5 task types represented in calibration.",
+  "source": "hand-built",
+  "dataset_name": "toy-routing-benchmark",
+  "version": "1.0",
+  "items": [
+    {
+      "id": "t-cls-001",
+      "task_type": "classification",
+      "scoring_method": "normalized_match",
+      "instruction": "Classify the support ticket into exactly one category. Reply with the category name only.",
+      "input_text": "I was charged twice for my July subscription and the second charge hasn't been refunded yet.",
+      "options": ["billing", "technical", "account"],
+      "gold_answer": "billing",
+      "scoring_params": {},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-cls-002",
+      "task_type": "classification",
+      "scoring_method": "normalized_match",
+      "instruction": "Classify the support ticket into exactly one category. Reply with the category name only.",
+      "input_text": "The website keeps showing a blank screen whenever I try to open my dashboard.",
+      "options": ["billing", "technical", "account"],
+      "gold_answer": "technical",
+      "scoring_params": {},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-cls-003",
+      "task_type": "classification",
+      "scoring_method": "normalized_match",
+      "instruction": "Classify the support ticket into exactly one category. Reply with the category name only.",
+      "input_text": "I forgot my password and cannot log into my account.",
+      "options": ["billing", "technical", "account"],
+      "gold_answer": "account",
+      "scoring_params": {},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-cls-004",
+      "task_type": "classification",
+      "scoring_method": "normalized_match",
+      "instruction": "Classify the support ticket into exactly one category. Reply with the category name only.",
+      "input_text": "My credit card was charged $49.99 even though I canceled my subscription last week.",
+      "options": ["billing", "technical", "account"],
+      "gold_answer": "billing",
+      "scoring_params": {},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-cls-005",
+      "task_type": "classification",
+      "scoring_method": "normalized_match",
+      "instruction": "Classify the support ticket into exactly one category. Reply with the category name only.",
+      "input_text": "The verification code never arrives when I try to sign in.",
+      "options": ["billing", "technical", "account"],
+      "gold_answer": "account",
+      "scoring_params": {},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+
+    {
+      "id": "t-mcq-001",
+      "task_type": "mcq_qa",
+      "scoring_method": "mcq_letter",
+      "instruction": "Choose the correct answer. Reply with the letter only.",
+      "input_text": "Which planet is the largest in our solar system?",
+      "options": [
+        "A) Earth",
+        "B) Mars",
+        "C) Jupiter",
+        "D) Venus"
+      ],
+      "gold_answer": "C",
+      "scoring_params": {},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-mcq-002",
+      "task_type": "mcq_qa",
+      "scoring_method": "mcq_letter",
+      "instruction": "Choose the correct answer. Reply with the letter only.",
+      "input_text": "Which data structure follows the FIFO principle?",
+      "options": [
+        "A) Stack",
+        "B) Queue",
+        "C) Tree",
+        "D) Graph"
+      ],
+      "gold_answer": "B",
+      "scoring_params": {},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-mcq-003",
+      "task_type": "mcq_qa",
+      "scoring_method": "mcq_letter",
+      "instruction": "Choose the correct answer. Reply with the letter only.",
+      "input_text": "What is 12 × 8?",
+      "options": [
+        "A) 86",
+        "B) 96",
+        "C) 108",
+        "D) 112"
+      ],
+      "gold_answer": "B",
+      "scoring_params": {},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+
+    {
+      "id": "t-num-001",
+      "task_type": "short_answer",
+      "scoring_method": "numeric_tolerance",
+      "instruction": "Calculate the answer. Reply with the number only.",
+      "input_text": "What is 25 + 37?",
+      "options": [],
+      "gold_answer": "62",
+      "scoring_params": {"tolerance": 0.0},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-num-002",
+      "task_type": "short_answer",
+      "scoring_method": "numeric_tolerance",
+      "instruction": "Calculate the answer. Reply with the number only.",
+      "input_text": "What is 15% of 200?",
+      "options": [],
+      "gold_answer": "30",
+      "scoring_params": {"tolerance": 0.0},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-num-003",
+      "task_type": "short_answer",
+      "scoring_method": "numeric_tolerance",
+      "instruction": "Calculate the average speed. Reply with the number only.",
+      "input_text": "A car travels 150 miles in 3 hours. What is its average speed in miles per hour?",
+      "options": [],
+      "gold_answer": "50",
+      "scoring_params": {"tolerance": 0.0},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+
+    {
+      "id": "t-ext-001",
+      "task_type": "extraction",
+      "scoring_method": "normalized_match",
+      "instruction": "Extract the person's name from the sentence. Reply with the name only.",
+      "input_text": "The project was presented by Maria Rodriguez during the science fair.",
+      "options": [],
+      "gold_answer": "Maria Rodriguez",
+      "scoring_params": {},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-ext-002",
+      "task_type": "extraction",
+      "scoring_method": "normalized_match",
+      "instruction": "Extract the city mentioned in the sentence. Reply with the city only.",
+      "input_text": "The conference will take place in Boston next Thursday.",
+      "options": [],
+      "gold_answer": "Boston",
+      "scoring_params": {},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+
+    {
+      "id": "t-sa-001",
+      "task_type": "short_answer",
+      "scoring_method": "token_f1",
+      "instruction": "Answer the question in one short sentence.",
+      "input_text": "Why do plants need sunlight?",
+      "options": [],
+      "gold_answer": "Plants need sunlight for photosynthesis and energy production.",
+      "scoring_params": {},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-sum-001",
+      "task_type": "summarization",
+      "scoring_method": "token_f1",
+      "instruction": "Summarize the passage in one or two sentences.",
+      "input_text": "Regular exercise can improve cardiovascular health, strengthen muscles, and improve mood. Even moderate physical activity performed consistently can provide significant health benefits.",
+      "options": [],
+      "gold_answer": "Regular exercise improves cardiovascular health, strengthens muscles, and can improve mood.",
+      "scoring_params": {},
+      "split": "calibration",
+      "metadata": {"source": "hand-built"}
+    },
+
+    {
+      "id": "t-cls-006",
+      "task_type": "classification",
+      "scoring_method": "normalized_match",
+      "instruction": "Classify the sentiment into exactly one category. Reply with the category name only.",
+      "input_text": "The new restaurant exceeded all of my expectations.",
+      "options": ["positive", "negative", "neutral"],
+      "gold_answer": "positive",
+      "scoring_params": {},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-cls-007",
+      "task_type": "classification",
+      "scoring_method": "normalized_match",
+      "instruction": "Classify the sentiment into exactly one category. Reply with the category name only.",
+      "input_text": "The instructions were confusing and the product was difficult to assemble.",
+      "options": ["positive", "negative", "neutral"],
+      "gold_answer": "negative",
+      "scoring_params": {},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-cls-008",
+      "task_type": "classification",
+      "scoring_method": "normalized_match",
+      "instruction": "Classify the sentiment into exactly one category. Reply with the category name only.",
+      "input_text": "The meeting is scheduled for 3 PM on Friday.",
+      "options": ["positive", "negative", "neutral"],
+      "gold_answer": "neutral",
+      "scoring_params": {},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-cls-009",
+      "task_type": "classification",
+      "scoring_method": "normalized_match",
+      "instruction": "Determine whether the statement is true or false. Reply with True or False only.",
+      "input_text": "A triangle has three sides.",
+      "options": ["True", "False"],
+      "gold_answer": "True",
+      "scoring_params": {},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-cls-010",
+      "task_type": "classification",
+      "scoring_method": "normalized_match",
+      "instruction": "Determine whether the statement is true or false. Reply with True or False only.",
+      "input_text": "The Pacific Ocean is smaller than the Atlantic Ocean.",
+      "options": ["True", "False"],
+      "gold_answer": "False",
+      "scoring_params": {},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+
+    {
+      "id": "t-mcq-004",
+      "task_type": "mcq_qa",
+      "scoring_method": "mcq_letter",
+      "instruction": "Choose the correct answer. Reply with the letter only.",
+      "input_text": "Which planet is known as the Red Planet?",
+      "options": [
+        "A) Venus",
+        "B) Jupiter",
+        "C) Mars",
+        "D) Mercury"
+      ],
+      "gold_answer": "C",
+      "scoring_params": {},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-mcq-005",
+      "task_type": "mcq_qa",
+      "scoring_method": "mcq_letter",
+      "instruction": "Choose the correct answer. Reply with the letter only.",
+      "input_text": "Which programming language is commonly used for data analysis and machine learning?",
+      "options": [
+        "A) Python",
+        "B) HTML",
+        "C) CSS",
+        "D) SQL"
+      ],
+      "gold_answer": "A",
+      "scoring_params": {},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-mcq-006",
+      "task_type": "mcq_qa",
+      "scoring_method": "mcq_letter",
+      "instruction": "Choose the correct answer. Reply with the letter only.",
+      "input_text": "What is the square root of 144?",
+      "options": [
+        "A) 10",
+        "B) 11",
+        "C) 12",
+        "D) 14"
+      ],
+      "gold_answer": "C",
+      "scoring_params": {},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+
+    {
+      "id": "t-num-004",
+      "task_type": "short_answer",
+      "scoring_method": "numeric_tolerance",
+      "instruction": "Calculate the answer. Reply with the number only.",
+      "input_text": "What is 48 × 7?",
+      "options": [],
+      "gold_answer": "336",
+      "scoring_params": {"tolerance": 0.0},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-num-005",
+      "task_type": "short_answer",
+      "scoring_method": "numeric_tolerance",
+      "instruction": "Calculate the sale price. Reply with the number only.",
+      "input_text": "A shirt costs $80 and is discounted by 25%. What is the sale price in dollars?",
+      "options": [],
+      "gold_answer": "60",
+      "scoring_params": {"tolerance": 0.0},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-num-006",
+      "task_type": "short_answer",
+      "scoring_method": "numeric_tolerance",
+      "instruction": "Calculate the area. Reply with the number only.",
+      "input_text": "A rectangle has a length of 12 cm and a width of 5 cm. What is its area in square centimeters?",
+      "options": [],
+      "gold_answer": "60",
+      "scoring_params": {"tolerance": 0.0},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+
+    {
+      "id": "t-ext-003",
+      "task_type": "extraction",
+      "scoring_method": "normalized_match",
+      "instruction": "Extract the person's name from the sentence. Reply with the name only.",
+      "input_text": "According to the report, Dr. James Chen led the research team.",
+      "options": [],
+      "gold_answer": "James Chen",
+      "scoring_params": {},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+    {
+      "id": "t-ext-004",
+      "task_type": "extraction",
+      "scoring_method": "normalized_match",
+      "instruction": "Extract the organization mentioned in the sentence. Reply with the organization only.",
+      "input_text": "The scholarship was provided by the National Science Foundation.",
+      "options": [],
+      "gold_answer": "National Science Foundation",
+      "scoring_params": {},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+
+    {
+      "id": "t-sa-002",
+      "task_type": "short_answer",
+      "scoring_method": "token_f1",
+      "instruction": "Answer the question in one short sentence.",
+      "input_text": "Why does ice float on liquid water?",
+      "options": [],
+      "gold_answer": "Ice floats because solid water is less dense than liquid water.",
+      "scoring_params": {},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    },
+
+    {
+      "id": "t-sum-002",
+      "task_type": "summarization",
+      "scoring_method": "token_f1",
+      "instruction": "Summarize the passage in one or two sentences.",
+      "input_text": "Machine learning systems learn patterns from data and use those patterns to make predictions or decisions. Their performance depends heavily on the quality and quantity of the data used during training.",
+      "options": [],
+      "gold_answer": "Machine learning systems learn patterns from data to make predictions, and their performance depends on training data quality and quantity.",
+      "scoring_params": {},
+      "split": "holdout",
+      "metadata": {"source": "hand-built"}
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+    "price_table": {
+    "id": "prices-2026-08-illustrative",
+    "as_of": "2026-08-01",
+    "notes": "ILLUSTRATIVE VALUES \u2014 every entry is flagged is_estimate. Replacing these with sourced public list prices (with real source_url and as_of values) is a Week 2 deliverable. Until you do, every dollar figure your tool prints is a placeholder, and the report must say so.",
+    "entries": [
+      {
+        "model_id": "meta-llama/llama-3.2-3b-instruct",
+        "usd_per_1m_input": 0.02,
+        "usd_per_1m_output": 0.02,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "google/gemma-4-31b-it",
+        "usd_per_1m_input": 0.03,
+        "usd_per_1m_output": 0.03,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "meta-llama/llama-3.1-70b-instruct",
+        "usd_per_1m_input": 0.6,
+        "usd_per_1m_output": 0.6,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "mistralai/mixtral-8x22b-instruct",
+        "usd_per_1m_input": 0.9,
+        "usd_per_1m_output": 0.9,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "qwen/qwen3.5-122b-a10b",
+        "usd_per_1m_input": 0.7,
+        "usd_per_1m_output": 0.7,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      },
+      {
+        "model_id": "deepseek-ai/deepseek-v4-pro",
+        "usd_per_1m_input": 1.2,
+        "usd_per_1m_output": 1.2,
+        "source_url": "",
+        "as_of": "2026-08-01",
+        "is_estimate": true,
+        "notes": "Illustrative. Replace with a sourced public list price."
+      }
+    ]
+  }
+}
